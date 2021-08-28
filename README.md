@@ -1323,14 +1323,15 @@ Podemos concatenar list sumándolas
 
 El método sorted() devuelve la lista ordenada pero no modifica la original.
 
-    ```python
-      list4 = [5,3,4,6,1]
+```python
 
-      listOrdenada = sorted(list4)
+  list4 = [5,3,4,6,1]
 
-      print(list4)        # [5, 3, 4, 6, 1]
-      print(listOrdenada) # [1, 3, 4, 5, 6]
-    ```
+  listOrdenada = sorted(list4)
+
+  print(list4)        # [5, 3, 4, 6, 1]
+  print(listOrdenada) # [1, 3, 4, 5, 6]
+```
 
 Tanto a sort() o sorted podemos indicar en base a que elemento se hace la ordenación y si queremos q sea reversa. Siempre que el iterable sea una tupla o un dictionari
 
