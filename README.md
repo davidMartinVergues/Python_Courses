@@ -772,6 +772,7 @@ print(2**3) # 8
 
 #### Parte entera de una división decimal
 
+trunca los decimales, no redondea!
 ```python
 # Para obtener la parte entera de una división decimal //
 
@@ -1000,7 +1001,7 @@ Tamaño de un str usamos la función len()
 
 #### **strip()**
 
-Permite eliminar los espacios en blanco por delante y detrás de un string. Puede aceptar como argumento los caracteres a eliminar
+Permite eliminar los espacios en blanco por delante y detrás de un string (inicio y final de una frase) o los caracteres que indiquemos, no importa el orden de los caracteres. Puede aceptar como argumento los caracteres a eliminar
 
 ```python
 string = '  xoxo love xoxo   '
@@ -2769,6 +2770,8 @@ Documentación de python https://docs.python.org/3/
 
 Para crear una función usamos la keyword `def`(define).  
 Para llamar a la función debemos usar los paréntesis (name_function())
+
+Hay que declarar las funciones antes de utilizarlas.
 
 En python a diferencia de JavaScript tenemos que definir previamente la función para poderla ejecutar.
 
@@ -4689,6 +4692,8 @@ if __name__ == '__main__':
     func2()
     func()
 ```
+
+Cuando en un script hay esta línea es como el punto de entrada para el programa y se ejecuta lo que hay dentro del if.
 
 # Decorators
 
