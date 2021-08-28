@@ -1834,22 +1834,22 @@ print(lista)# {'a': 4, 'b': 9}
   # {'name': 'David', 'age': 36, 'hobbies': ['read', 'play'], 'job': 'developer'}
   ```
 
-## Tuples - data structure -
+## Tuples data structure
 
 - Son muy similares a las listas pero tiene la diferencia que son `inmutables`.
 
-      ```python
-        t = ('one',2,3, 2)
+```python
+  t = ('one',2,3, 2)
 
-        t.count(2) # 2
-        t.index('one') # 0
+  t.count(2) # 2
+  t.index('one') # 0
 
-        type(t) # tuple
+  type(t) # tuple
 
-        t[0]   # 'one'
-        t[-1]  #3
-        len(t) # 4
-      ```
+  t[0]   # 'one'
+  t[-1]  #3
+  len(t) # 4
+```
 
   Podemos usar la keyword `in`
 
@@ -1878,22 +1878,22 @@ Sólo hay dos métodos asociados a tuplas.
 
 - Count devulve cuantas veces se encuentra un elemento en la tupla y index cual es la posición de un elemento dado si aparece más de una vez nos devuelve el índice del primero que encuentra.
 
-  ```python
-    t = ('one',2,3,2)
+```python
+  t = ('one',2,3,2)
 
-    t.count(2) # 2
-    t.index('one') # 0
+  t.count(2) # 2
+  t.index('one') # 0
 
-  ```
+```
 
 #### **Sum()**
 
 - Podemos sumar el contenido de las tuplas. Sólo para valores numéricos
 
-  ```python
-  r = sum((10,10))  # 20
+```python
+r = sum((10,10))  # 20
 
-  ```
+```
 
 ## Sets - data structure -
 
@@ -1985,49 +1985,49 @@ Si hacemos un set de un string éste guardará cada carácter por separado sin r
 #### intersection() o &
 
 - Nos da información de los elementos que coinciden entre dos sets
-  ```python
-  print(my_set.intersection(your_set)) # {4,5}
-  print(my_set & your_set) # {4,5}
-  ```
+```python
+print(my_set.intersection(your_set)) # {4,5}
+print(my_set & your_set) # {4,5}
+```
 
 #### isdisjoint()
 
 - Nos devuele True (no coiniden elementos ) or False(hay elementos coincidentes) si hay elementos coincidentes entre dos sets
-  ```python
-  print(my_set.intersection(your_set)) # False el 4 y 5
-  ```
+```python
+print(my_set.intersection(your_set)) # False el 4 y 5
+```
 
 #### union() o |
 
 - Permite fusionar dos sets, sin incluir los elementos repetidos claro.
 
-  ```python
-  new_set = my_set.union(your_set)
-  new_set = my_set | your_set
-  new_set # {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-  ```
+```python
+new_set = my_set.union(your_set)
+new_set = my_set | your_set
+new_set # {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+```
 
 #### issuperset()
 
 - Es para evaluar lo opuesto al subset, si en nuestro set de mayor tamaño se incluye un set menor
 
-  ```python
-  my_set = {4,5}
-  your_set = {4,5,6,7,8,9,10}
+```python
+my_set = {4,5}
+your_set = {4,5,6,7,8,9,10}
 
-  print(your_set.issuperset(my_set)) # True
+print(your_set.issuperset(my_set)) # True
 
-  ```
+```
 
 #### **Issubset()**
 
 - Para saber si un set contiene a otro set.
 
-  ```python
-    s = set("paralel")
+```python
+  s = set("paralel")
 
-    {'a', 'r'}.issubset(s) # True
-  ```
+  {'a', 'r'}.issubset(s) # True
+```
 
 # In/Out with basic Files
 
@@ -2144,19 +2144,19 @@ FOUR ON FOURTH
 ### **'a' (append) mode**
 
 - Añade texto al final del documento
-  ```python
-  with open('my_new_file.txt',mode='a') as f:
-      f.write('FOUR ON FOURTH')
-  ```
+```python
+with open('my_new_file.txt',mode='a') as f:
+    f.write('FOUR ON FOURTH')
+```
   si no existe lo crea!
 
 ### **w (write) mode**
 
 - Abrirá o creará en su defecto un archivo con ese nombre, si ya existe lo sobreescribe
-  ```python
-  with open('my_new_file2.txt', mode='w') as f:
-    f.write('i created this file')
-  ```
+```python
+with open('my_new_file2.txt', mode='w') as f:
+  f.write('i created this file')
+```
 
 ## File location
 
