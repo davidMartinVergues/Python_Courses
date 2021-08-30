@@ -27,3 +27,8 @@ def binary_search(list,goal,start=None,end=None):
 
 if __name__ == "__main__":
     run()
+
+
+
+
+

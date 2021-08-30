@@ -44,6 +44,8 @@
     - [**Métodos**](#métodos)
       - [**len()**](#len)
       - [**Slicing**](#slicing-1)
+      - [multiplicar elementos de una list](#multiplicar-elementos-de-una-list)
+      - [concatenar list sumándolas](#concatenar-list-sumándolas)
       - [**Append() pop()**](#append-pop)
       - [**remove(element_value)**](#removeelement_value)
       - [**clear()**](#clear)
@@ -66,7 +68,7 @@
       - [**copy()**](#copy-1)
       - [**pop()**](#pop)
       - [**update()**](#update)
-  - [Tuples - data structure -](#tuples---data-structure--)
+  - [Tuples data structure](#tuples-data-structure)
     - [**Métodos**](#métodos-2)
       - [**Count() / index()**](#count--index)
       - [**Sum()**](#sum)
@@ -276,9 +278,9 @@ Bajaremos un paqueta q se llama anaconda compuesto por python y una serie de lib
 1. Vamos a en nuestro direcotrio
 2. Ejecutamos el archivo descargado en el link
 
-   ```
-     bash Anaconda3-5.2.0-Linux-x86_64.sh
-   ```
+```
+  bash Anaconda3-5.2.0-Linux-x86_64.sh
+```
 
    Durante la instalación nos va a preguntar:
 
@@ -288,50 +290,50 @@ Bajaremos un paqueta q se llama anaconda compuesto por python y una serie de lib
 
    si le damos a no hay q hacer los siguiente para iniciar anaconda:
 
-   ```
-   source /home/david/anaconda3/bin/activate
+```
+source /home/david/anaconda3/bin/activate
 
-   conda init
+conda init
 
-   ```
+```
 
-   ```
-     source .bashrc
-   ```
+```
+  source .bashrc
+```
 
 3. Comprobamos que se ha instalado adecuadamente  
    ![not found](img/img-1.png)
 4. Lanzamos interfaz gráfica de Anaconda
 
-   ```
-       anaconda-navigator
-   ```
+```
+    anaconda-navigator
+```
 
 5. Para ver info de anaconda
 
-   ```
-       conda info
-   ```
+```
+    conda info
+```
 
 ![not found](img/img-2.png)
 
 6. Vemos como en el prompt pone base eso es xq es el interprete de anaconda para desactivarlo
 
-   ```
-     conda deactivate
-   ```
+```
+  conda deactivate
+```
 
    para volverla a activar
 
-   ```
-    conda activate
-    
-   ```
+```
+conda activate
+
+```
    Una vez instalado anaconda cada vez que abramos una nueva terminal se activará por defecto el entorno viertual conda, para prevenir esto podemos usar el siguiente comando 
    
-   ```
-   conda config --set auto_activate_base false
-   ```
+```
+conda config --set auto_activate_base false
+```
 
 1. Saber versión y donde está instalado python  
    ![not found](img/img-3.png)
@@ -348,16 +350,48 @@ Y nos tiene q dar la misma respuesta.
 
 Para actualizar anaconda
 
-```python
+```
 conda deactivate
 ```
 
-```python
+```
 conda update anaconda
 ```
 
-```python
+```
 conda update anaconda-navigator
+```
+Si queremos instalar python fuera de anaconda podemos hacerlo con nuestro getsor de paquetes
+
+primero miramos q version tenemos ya instalada
+
+```
+python3 --version
+```
+actualizamos e instalamos
+
+```
+sudo apt update
+sudo apt install python3.9
+```
+ahora tenemos que añadir la antigua version de python3 a la update-alternatives
+
+```
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.[old-version] 1
+```
+y añadimos la nueva 
+```language
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
+```
+y ahora podemos escoger qué versión queremos de python3 se por defecto
+
+```
+sudo update-alternatives --config python3
+```
+
+```
+python3.9 -m test
+
 ```
 
 ## Instalamos el tema para Jupyter
@@ -424,6 +458,11 @@ En los settings de vscode podemos añadir esta info para cualquier archivo .py u
 
 Podemos crear un entorno virtual para cada proyecto de python. Un entorno virtual es una herramienta que ayuda a mantener separadas las dependencias requeridas por diferentes proyectos. Estos ebtornos virtuales están aislados unos de otros.
 
+![not found](img/img-j-47.png)
+
+es como tener un oython aislado con sus propios módulos para cada proyecto.
+
+
 Imagine un escenario en el que está trabajando en dos proyectos web Python y uno de ellos usa Django 1.9 y el otro usa Django 1.10. En tales situaciones, el entorno virtual puede ser realmente útil para mantener las dependencias de ambos proyectos separadas y tener diferentes versiones de las librerias xa cada proyecto.
 
 Realmente cuando creamos un entorno virtual instalamos un interprete de python en una localización concreta y se reescribe el PATH haciendo que cuando usemos el comando python, éste empiece a buscar el intérprete de por la carpete de venv del proyecto. Para comprobar esto podemos hacer `echo $PATH `
@@ -479,6 +518,7 @@ este comando llama al mòdulo (-m) con nombre (venv) y después pasa un nombre p
 
 esto crea un directorio con el nombre especificado.
 
+
 > Por convención primero se crea el directorio de nuestro proyecto y dentro de éste se genera el entorno virtual
 
 ```
@@ -495,7 +535,12 @@ El resto de archivos de nuestro proyecto **no los pondremos** nunca dentro de nu
 
 ![not found](img/img-j-40.png)
 
-Una cosa importante a tener en cuenta es que al crear el entorno virtual éste usará el interprete en la versión de python que estemos usando en ese momento, así que si queremos usar diferentes versiones del interprete de python debemos asegurarnos de cambiar antes de crear el entorno virtual.
+Una cosa importante a tener en cuenta es que al crear el entorno virtual éste usará el interprete en la versión de python que estemos usando en ese momento, así que si queremos usar diferentes versiones del interprete de python que tengamos instalado debemos especificarlo cuando creamos el entorno.
+
+```
+python3.8 -m venv nombre_del_proyecto_venv
+```
+
 
 ```
 (venv) david@david-neon:~/Documentos$ which python
@@ -504,6 +549,8 @@ Una cosa importante a tener en cuenta es que al crear el entorno virtual éste u
 (venv) david@david-neon:~/Documentos$ python --version
 Python 3.8.5
 ```
+
+Por defecto en este entorno no tendremos instalado ningún módulo aunque el gestor de paquetes pip si estará instalado aunque se recomienda actualizarlo `pip install --upgrade pip`.
 
 Una vez creado nuestro entorno virtual e instalado nuestras dependencias, podemos querer reproducir el mismo proyecto en otro entorno virtual pero conservando todas esas dependencias para q el proyecto funcione bien para ello usaremos el comando
 
@@ -565,7 +612,7 @@ y tb podemos hacer un freeze local
 pip freeze --local > requeriments.txt
 ```
 
-Cuando se crea un entorno virtual con venv se crea en la raíz del entorno un archivo `pyvenv..cfg` con la configuración del entorno.
+Cuando se crea un entorno virtual con venv se crea en la raíz del entorno un archivo `pyvenv.cfg` con la configuración del entorno.
 
 ![not found](img/img-j-44.png)
 
@@ -727,6 +774,8 @@ conda env remove --prefix /home/david/Documentos/New-project-7/venv
 conda create --name <new_name> --clone <old_name>
 conda remove --name <old_name> --all
 ```
+
+> Todo esto se puede gestionar de manera grafica con la GUI de conda-navgator
 
 ## Usos de python y librerías
 
@@ -1198,7 +1247,7 @@ string.ascii_lowercase
 
 ## List - (data structure)
 
-Secuencia ordenada de elementos que pueden ser de diferentes tipos(numbers, string,obj...). Podemos tener distintos tipos de datos almacenados en un list.
+Secuencia ordenada de elementos que pueden ser de diferentes tipos(numbers, string,obj...). Podemos tener distintos tipos de datos almacenados en un list. Las listas en python son dinámicas podemos modificarlas.
 
 ### **Métodos**
 
@@ -1227,8 +1276,17 @@ Secuencia ordenada de elementos que pueden ser de diferentes tipos(numbers, stri
     my_List[::2]    #  ['string', 20.3, 2]
     my_List*2       # ['string', 100, 20.3, 1, 2, 3, 'string', 100, 20.3, 1, 2, 3]
 ```
+#### multiplicar elementos de una list
 
-Podemos concatenar list sumándolas
+```python
+lista = [1,2,3,4,5]
+
+lista *=3
+lista # [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+```
+
+
+#### concatenar list sumándolas
 
 ```python
     my_list_1 = [1,2,3,4,5]
@@ -1852,10 +1910,11 @@ print(lista)# {'a': 4, 'b': 9}
   len(t) # 4
 ```
 
-  Podemos usar la keyword `in`
+Podemos usar la keyword `in`
 
-      2 in t # True
-
+```python
+2 in t # True
+```
 Podemos usar tb `slicing`
 
 ```python
