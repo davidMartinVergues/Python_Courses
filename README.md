@@ -115,9 +115,10 @@
     - [**Continue**](#continue)
     - [**Break**](#break)
 - [Buil-in function útiles](#buil-in-function-útiles)
-  - [Map(func,iterable)](#mapfunciterable)
-  - [Filter(function, iterable)](#filterfunction-iterable)
-  - [Reduce(function, iterable, [initial_value] )](#reducefunction-iterable-initial_value-)
+  - [HOC - Hight Order Function Funciones de orden superior](#hoc---hight-order-function-funciones-de-orden-superior)
+    - [Map(func,iterable)](#mapfunciterable)
+    - [Filter(function, iterable)](#filterfunction-iterable)
+    - [Reduce(function, iterable, [initial_value] )](#reducefunction-iterable-initial_value-)
   - [zip()](#zip)
   - [Lambda](#lambda)
   - [Range()](#range)
@@ -227,7 +228,6 @@
 - [Decorators](#decorators)
   - [Que es un decorator](#que-es-un-decorator)
   - [First class citizens](#first-class-citizens)
-  - [HOC - Higher Order Function](#hoc---higher-order-function)
   - [Decorators syntaxi](#decorators-syntaxi)
   - [Para que usamos los decorators](#para-que-usamos-los-decorators)
 - [Errores y gestión de excepciones](#errores-y-gestión-de-excepciones)
@@ -360,6 +360,10 @@ conda update anaconda
 
 ```
 conda update anaconda-navigator
+```
+para actualizar el interprete de python que usa anaconda 
+```
+conda update python
 ```
 Si queremos instalar python fuera de anaconda podemos hacerlo con nuestro getsor de paquetes
 
@@ -842,12 +846,22 @@ print(6 % 4 )# 2
 
 #### **round**
 
-Permite redondear el número
 
 ```python
 round(3.1) # 3
 round(3.9) # 4
 ```
+
+round está dentro del nucleao de python(no necesitamos importar nada), lo q hace es redondear. En el caso de que la parte entera sea impar y la parte decimal sea x.5 redondea hacia arriba, si el entero es par redondea hacia abajo. Este comportamiento es para compensar.
+
+```python
+round(2.5) # 2
+round(3.5) # 4
+```
+
+math incluye funciones trigonométricas, logaritmos base 10 y logaritmos neperianos
+
+Tenemos una librería específica para trabajar con número `Numpy`
 
 #### **abs**
 
@@ -1284,8 +1298,6 @@ lista = [1,2,3,4,5]
 lista *=3
 lista # [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
 ```
-
-
 #### concatenar list sumándolas
 
 ```python
@@ -1486,6 +1498,15 @@ student_tuples.sort(key=lambda student: student[2])   # sort by age
 
   ```
 
+  podemos deshacer listas anidadas, esto se lee como el resultadodel primer for (for sublist in list1) lo paso al segunda for (for val in sublist) y val es lo qe retornamos en la list final.
+
+  ```python
+    list1 = [[1,2,3],[4,5,6],[7,8,9]]
+
+    list2 = [val for sublist in list1 for val in sublist]
+    print(list2) # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  ```
+  
   ```python
     s = ['a','b','c','b','d','m','n','n']
 
@@ -2054,7 +2075,7 @@ print(my_set & your_set) # {4,5}
 
 - Nos devuele True (no coiniden elementos ) or False(hay elementos coincidentes) si hay elementos coincidentes entre dos sets
 ```python
-print(my_set.intersection(your_set)) # False el 4 y 5
+print(my_set.isdisjoint(your_set)) # False el 4 y 5
 ```
 
 #### union() o |
@@ -2554,7 +2575,11 @@ Detiene la ejecución del loop donde está contenido.
 
 # Buil-in function útiles
 
-## Map(func,iterable)
+## HOC - Hight Order Function Funciones de orden superior
+
+Las funciones de alto grado son aquellas que acceptan otras funciones como argumento. Por ejemplo `map()` sería una HOC
+
+### Map(func,iterable)
 
 Es una función que nos permite mapear otra función sobre un objeto iterable. Cuando decimos mapear significa emparejar un elemento con otro, en este caso aplicamos una función a cada uno de los elementos que integran el objeto iterable(lista o tupla) devolviendo un nuevo iterador tipo `map` cuyos elementos son el resultado de dicha operación.
 
@@ -2571,7 +2596,7 @@ Otro ejemplo con strings
 
 ![not found](img/img-j-17.png)
 
-## Filter(function, iterable)
+### Filter(function, iterable)
 
 Es muy parecido a map en el sentido que aplicará una función a cada uno de los elementos de un objeto iterable, con dos diferencias:
 
@@ -2580,7 +2605,7 @@ Es muy parecido a map en el sentido que aplicará una función a cada uno de los
 
 ![not found](img/img-j-18.png)
 
-## Reduce(function, iterable, [initial_value] )
+### Reduce(function, iterable, [initial_value] )
 
 Nos permite aplicar una función a un iterable y reducir sus items a un único valor `acumulativo`. Ese único valor se obtiene dependiendo de la función pasada.
 
@@ -2654,7 +2679,10 @@ Permite unir listas y generar tupples con los elementos de cada lista coincident
 
 ## Lambda
 
-Las expresiones lambdas es como construir una función anónima, es una función que usaremos durante el código pero que no nos interesa definirla como tal.
+Las expresiones lambdas es como construir una función anónima, es una función que usaremos durante el código pero que no nos interesa identificarlas con un nombre.
+
+Solo pueden tener una únuca línea de código.
+
 El contenido de la función lambda debe ser una única expresión en lugar de un bloque de acciones.
 
 ```python
@@ -4163,17 +4191,6 @@ math.floor(value) # 3
 math.ceil(value) # 4
 ```
 
-round no está dentro de math, lo q hace es redondear en el caso de los impares y q la parte decimal se .5 redondea hacia arriba si el número es par redondea hacia abajo. Este comortamiento es ara compensar.
-
-```python
-round(2.5) # 2
-round(3.5) # 4
-```
-
-math incluye funciones trigonométricas, logaritmos base 10 y logaritmos neperianos
-
-Tenemos una librería específica para trabajar con número `Numpy`
-
 ### random.randint(low,hight)
 
 Permite generar un valor aleatorio entre dos enteros suministrados, incluyendo los límites.
@@ -4789,10 +4806,6 @@ del hello
 ```
 
 Python elimina la referencia hello pero la función sigue estando en el espacio de memoria pq hay otra referencia (greet) que está apuntando.
-
-## HOC - Higher Order Function
-
-Las funciones de alto grado son aquellas que acceptan otras funciones como argumento. Por ejemplo `map()` sería una HOC
 
 ## Decorators syntaxi
 
