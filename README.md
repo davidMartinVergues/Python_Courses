@@ -31,12 +31,17 @@
   - [String](#string)
     - [**Propiedades de los strings**](#propiedades-de-los-strings)
     - [**Métodos de los strings**](#métodos-de-los-strings)
+      - [**isnumeric**](#isnumeric)
       - [**Slicing**](#slicing)
       - [**strip()**](#strip)
       - [**upper() lower() split()**](#upper-lower-split)
       - [**format**](#format)
       - [**Casefold**](#casefold)
       - [**find**](#find)
+      - [**isalnum**](#isalnum)
+      - [**isalpha**](#isalpha)
+      - [**islower / isupper**](#islower--isupper)
+      - [**title**](#title)
       - [**Capitalize**](#capitalize)
       - [**replace**](#replace)
       - [generar el alfabeto (inglés)](#generar-el-alfabeto-inglés)
@@ -68,6 +73,8 @@
       - [**copy()**](#copy-1)
       - [**pop()**](#pop)
       - [**update()**](#update)
+      - [merge operator |](#merge-operator-)
+      - [update operator |=](#update-operator-)
   - [Tuples data structure](#tuples-data-structure)
     - [**Métodos**](#métodos-2)
       - [**Count() / index()**](#count--index)
@@ -88,8 +95,9 @@
   - [Crear un fichero - %%writefile](#crear-un-fichero---writefile)
   - [Abrir el fichero - open()](#abrir-el-fichero---open)
   - [Leer el fichero - .read()](#leer-el-fichero---read)
-  - [seek()](#seek)
-  - [readlines()](#readlines)
+  - [seek() and tell()](#seek-and-tell)
+  - [readline() trim methos](#readline-trim-methos)
+  - [readlines() .splitlines .rstrip()](#readlines-splitlines-rstrip)
   - [close()](#close)
   - [With...as](#withas)
   - [open() - extendido](#open---extendido)
@@ -231,6 +239,7 @@
   - [Decorators syntaxi](#decorators-syntaxi)
   - [Para que usamos los decorators](#para-que-usamos-los-decorators)
 - [Errores y gestión de excepciones](#errores-y-gestión-de-excepciones)
+  - [assert statements](#assert-statements)
   - [Lanzar nuestras propias excepciones](#lanzar-nuestras-propias-excepciones)
 - [Unit testing](#unit-testing)
   - [Pylint](#pylint)
@@ -256,6 +265,7 @@
   - [resize de una imagen](#resize-de-una-imagen)
   - [rotar imagenes](#rotar-imagenes)
   - [Transparencias](#transparencias)
+  - [working with PDFs and Spreadsheet](#working-with-pdfs-and-spreadsheet)
 
 # Course from zero to Hero - Udemy -
 
@@ -395,7 +405,13 @@ sudo update-alternatives --config python3
 
 ```
 python3.9 -m test
+```
+si después de instalar python3.9 me da priblemas el `sudo apt update` es xq no encuentra el paquete `apt_pkg` hacer lo siguiente:
 
+```
+$ cd /usr/lib/python3/dist-packages
+$ ls -la | grep "apt_pkg.cpython"
+$ sudo cp apt_pkg.cpython-38-x86_64-linux-gnu.so apt_pkg.so
 ```
 
 ## Instalamos el tema para Jupyter
@@ -893,8 +909,18 @@ Hay q tener claro que en python no hay tipos primitivos, todo el python son obje
 
 Python usa tipado dinámico como JavaScript esto significa que no es necesario especificar el tipo de dato que contendrá dicha variable.
 Por ejemplo Java tiene un tipado estático porque requiere que especifiquemos durante la declaración el tipo de dato que contendrá la variable.  
- Podemos usar `type()` para saber el tipo de variable  
- Usamos la función `str()` para **castear** a string, lo que llamamos `type conversion`. Podemos usar `int()` `float()` `bool` ...
+
+Podemos usar `type()` para saber el tipo de variable  
+Usamos la función `str()` para **castear** a string, lo que llamamos `type conversion`. Podemos usar `int()` `float()` `bool` ...
+
+Python tiene un casteo implícito cuando:
+1. de integer a float 
+
+pero no es cpaz de hacerlo cuando concatenamos un str y un int, da error. En ese caso hay que hacer un cast explícito
+
+```python
+print(int('1')+1) 
+```
 
 ```python
   # Tipado dinámico
@@ -1010,6 +1036,16 @@ Tamaño de un str usamos la función len()
 
 ### **Métodos de los strings**
 
+#### **isnumeric**
+
+permite saber si un string se puede castear a un integer
+
+```python
+num = '21'
+num.isnumeric() # True
+'a'.isnumeric() # False
+```
+
 #### **Slicing**
 
 - [start:stop:step] nos permite obtener un subString  
@@ -1100,6 +1136,7 @@ print(string.strip('an')) # droid is aweso
     print(x.split()) #['hi', 'this', 'is', 'a', 'string']
     print(x.split('i')) #['h', ' th', 's ', 's a str', 'ng']
 ```
+otros metodos para hacer strim de strings son estos: [strim methods](#readline-trim-methos)
 
 #### **format**
 
@@ -1222,6 +1259,34 @@ print('me llamo {0:.3} '.format(name)) #me llamo Dav
     str2.find('Hello') #-1
   ```
 
+#### **isalnum**
+nos dice si un str es alfanumérico
+```python
+s = "hello world"
+s.isalnum() # 'False, por el espacio
+'helloworld'.isalnum() # True 
+```
+#### **isalpha**
+nos dice si el str solo contiene caracteres tipo letra
+```python
+s.isalpha() # False 
+```
+#### **islower / isupper**
+nos dice si el testo está en minúsculas o mayúsculas.
+
+```python
+'hello World'.islower() # False 
+'hello World'.isupper() # False
+'hello world'.islower() # True
+```
+#### **title**
+
+La primera letra de cada palabra en una frase la pone en mayúscula.
+
+```python
+s = "hello world"
+s.title() # 'Hello World'
+```
 #### **Capitalize**
 
 - La primera letra de una palabra en mayúscula.
@@ -1913,6 +1978,55 @@ print(lista)# {'a': 4, 'b': 9}
   print(user)
   # {'name': 'David', 'age': 36, 'hobbies': ['read', 'play'], 'job': 'developer'}
   ```
+#### merge operator | 
+
+este perador devuelve un nuevo dictionary resultante de fusionar dos dictionaries - solo funciona para versione 3.9+
+
+```python
+user = {
+        'name': 'Facundo',
+        'age': 72,
+        'organization': 'Platzi',
+        'position': 'Technical Coach',
+        'language': 'python',
+    }
+user2 = user | {'old':True}
+
+print(user)
+print(user2)
+
+'''
+{'name': 'Facundo', 'age': 72, 'organization': 'Platzi', 'position': 'Technical Coach', 'language': 'python'}
+
+{'name': 'Facundo', 'age': 72, 'organization': 'Platzi', 'position': 'Technical Coach', 'language': 'python', 'old': True}
+'''
+
+```
+#### update operator |= 
+
+este perador permite añadir nuevas claves a un dict existente - solo funciona para versione 3.9+. No devuelve un nuevo dictionary actualiza uno existente
+
+```python
+user = {
+        'name': 'Facundo',
+        'age': 72,
+        'organization': 'Platzi',
+        'position': 'Technical Coach',
+        'language': 'python',
+    }
+user |= {'old':True}
+
+user
+'''
+{'name': 'Facundo',
+ 'age': 72,
+ 'organization': 'Platzi',
+ 'position': 'Technical Coach',
+ 'language': 'python',
+ 'old': True}
+'''
+
+```
 
 ## Tuples data structure
 
@@ -2158,16 +2272,48 @@ El contenido del fichero lo tenemos en la variable, para leer su contenido usamo
 
 Este método funciona con un cursor de tal modo que cuando lo utilizamos por primera vez el cursor va desde el inicio al final del texto, así si volvemos a utilizar el método, como el cursor está al final, no nos devolverá nada.
 
-## seek()
+## seek() and tell()
 
-Si queremos resetear este cursor utilizamos el método seek()
+Si queremos resetear este cursor utilizamos el método `seek()`
+ para saber sónde está nestro cursor(en qué línea se encuentra) usamos `tell()`
 
 ```python
       myFile.seek(0)
 
 ```
+## readline() trim methos
+nos permite leer el fichero línea a línea, devuelve un string con la línea junto con el salto de línea  `\n`
+```python
+ 
+line_one=''
 
-## readlines()
+with open('/home/david/Programacion/PYTHON/Code/0.ejercicios_extra/numbers.txt','r',encoding='utf-8') as file:
+
+    print(f'el cursor lo tenemos en la posición {file.tell()}') # el cursor lo tenemos en la posición 0
+    line_one = file.readline()
+    print(f'el cursor lo tenemos en la posición {file.tell()}') #  el cursor lo tenemos en la posición 2
+
+line_one # '1\n' 
+line_one.strip() # '1' nos devuelve copia del string eliminando los salto de linea \n tabulaciones \t y whitespace por delante y detrás
+line_one.rstrip() # ' 1' lo mismo que arriba pero solo a la derecha (right) del str
+line_one.lstrip() # '1' lo mismo que arriba pero solo a la izquierda (left) del str
+```
+después tenemos split() q nos crea una lista separando las palabras por defecto por whitescpaces o por un caracter especificado. Tenemos
+
+split() => empieza desde la izq 
+rsplit() => empieza desde la derecha
+
+no veremos diferencia a mens que pasemos un parámetro de maxsplit, marca el número máximo de elementos que serán separados y el resto del string queda junto.
+
+```python
+fruits = 'apples$banana$mango$fig$pear'
+
+print(fruits.rsplit('$', 2)) # ['apples$banana$mango', 'fig', 'pear']
+print(fruits.split('$', 2)) # ['apples', 'banana', 'mango$fig$pear']
+
+```
+
+## readlines() .splitlines .rstrip()
 
 Permite guardar en una lista cada línea del texto. Tenemos que tener en cuenta que al final de cada línea hay un salto de línea \n
 
@@ -2181,6 +2327,36 @@ Permite guardar en una lista cada línea del texto. Tenemos que tener en cuenta 
       'this is the third line\n']
       '''
 ```
+Para ello debemos usar el método `rstrip()` para cada string de la lista
+
+```python
+
+lines_all=''
+
+with open('/home/david/Programacion/PYTHON/Code/0.ejercicios_extra/numbers.txt','r',encoding='utf-8') as file:
+
+    lines_all = file.readlines()
+
+
+[lines.rstrip() for lines in lines_all]
+# ['1', '54', '554', '548', '2', '659', '4', '646']
+```
+o bien podemos usar el método `splitlines()` q nos lee las líneas quita el salto de línea y lo guarda todo en otra lista
+
+```python
+
+lines_all=''
+
+with open('/home/david/Programacion/PYTHON/Code/0.ejercicios_extra/numbers.txt','r',encoding='utf-8') as file:
+
+    lines_all = file.read()
+
+
+lines_all              # '1\n54\n554\n548\n2\n659\n4\n646'
+lines_all.splitlines() # ['1', '54', '554', '548', '2', '659', '4', '646']
+```
+
+
 
 ## close()
 
@@ -2196,8 +2372,10 @@ Una vez terminamos el trabajo con el fichero debemos cerrarlo
 
 Si no nos queremos preocupar por cerrar archivos podemos utilizar esta sentencia que abrirá el archivo y después de hacer las operaciones pertinentes lo vuelve a cerrar automáticamente.
 
+E simportante recordar que si abrimos un fichero para leer/escribir en el debemos especificar la codificación que usará para evitar carcateres extraños para ello añadiremos en la funnción open el parámetro `encoding="utf-8"`
+
 ```python
-      with open('myFile.txt') as my_new_File:
+      with open('myFile.txt','r', encoding="utf-8") as my_new_File:
           content = my_new_File.read()
 
       content # #'hello this is a text file \nthis is a second line\nthis is the third line\n'
@@ -2210,9 +2388,12 @@ Cuando abrimos un archivo la función acepta estos parámetros:
 
 El modo puede ser:  
 ![not found](img/img-10.png)
+![not found](img/img-j-49.png)
 
 ```python
-with open('my_new_file.txt', mode='r') as f:
+
+#with open('my_new_file.txt', mode='r') as f:
+with open('my_new_file.txt', 'r', encoding="utf-8") as f:
     print(f.read())
 '''
 ONE ON FIRST
@@ -2226,7 +2407,7 @@ FOUR ON FOURTH
 
 - Añade texto al final del documento
 ```python
-with open('my_new_file.txt',mode='a') as f:
+with open('my_new_file.txt','a', encoding="utf-8") as f:
     f.write('FOUR ON FOURTH')
 ```
   si no existe lo crea!
@@ -2235,7 +2416,7 @@ with open('my_new_file.txt',mode='a') as f:
 
 - Abrirá o creará en su defecto un archivo con ese nombre, si ya existe lo sobreescribe
 ```python
-with open('my_new_file2.txt', mode='w') as f:
+with open('my_new_file2.txt', 'w', encoding="utf-8") as f:
   f.write('i created this file')
 ```
 
@@ -2848,7 +3029,7 @@ Permite al usuario entrar datos. Devuelve un string, podemos castear con int() o
 
 ### Validación input
 
-Hantes de hacer el cast del input nos debemos de asegurar que es convertible.
+Hantes de hacer el cast del input nos debemos de asegurar que es convertible. Para ello podemos usar un método de los strings [.isnumeric()](#isnumeric)
 
 # Methods and Functions
 
@@ -4903,6 +5084,11 @@ long_time(100000000)
 
 Cuando en nuestro código se realizan ciertas funciones que pueden ocasionar un error, como por ejemplo leer un archivo, tenemos que gestionar ese posible error, ya que cuando se produce el error se detiene la ejecución del programa.
 
+![not found](img/img-j-48.png)
+
+Cuando tenemos un error de sintaxis el programa no ejecuta ninguna línea pero si tenemos una excepción se ejecuta hasta ese punto, entonces python genera un objeto error que lo va elevando en nuestro programa para detenerlo. Este objeto error genera una `traceback` Para leer la traceback se empieza por la última línea y vamos hacia arriba. En la última línea aparece qué tipo de error tenemos y la de arriba nos da la info del archivo dnd se dió el error
+
+
 Los diferentes tipos de errores/excepciones que se pueden generar son:
 [Buil-in exception](https://docs.python.org/3.8/library/exceptions.html#bltin-exceptions)
 
@@ -4915,7 +5101,7 @@ Para ello utilizamos el bloque `try-except-else` o `try-except-finally`.
 - else:
   Se ejecuta cuando no se genera ningún error
 - finally:
-  código que se ejecutará siempre al terminar el bloque, haya o no generado un error.
+  código que se ejecutará siempre al terminar el bloque, haya o no generado un error. Normalmente se usa para cerrar archivos o cerrar conexiones a BBDD o liberar recursos.
 
 ```python
 try:
@@ -5099,12 +5285,39 @@ def ask_for_int():
 
 ```
 
+## assert statements
+
+nos permiten evaluar una condición en cualquier punto de nuestro código, en el caso que se resuelva como true el código continua pero si no lanza una `assertionError`
+
+```python
+def palindrome(word):
+  try:
+    if len(word)== 0:
+      assert len(word)>0, "cannot use empty strings"
+    return word == word[::-1]
+  except ValueError as err:
+    print(err)
+    return False
+```
+
 ## Lanzar nuestras propias excepciones
 
 Para lanzar una excepción usamos la keyword `raise()`
 
 ```python
 raise Exception('hey cut it out')
+```
+por ejemplo el código sería así:
+
+```python
+def palindrome(word):
+  try:
+    if len(word)== 0:
+      raise ValueError('cannot use a void string')
+    return word == word[::-1]
+  except ValueError as err:
+    print(err)
+    return False
 ```
 
 ![not found](img/img-j-30.png)
@@ -5767,3 +5980,40 @@ Ahora aplicamos la transparencia
 
 red.putalpha(90)
 ```
+
+Podemos mezclar dos imagenes superponiéndolas por ejemplo el cuadrado rojo sobre el azul para crear un color púrpura. Usando `.save()` y añadiendo tranparencia a la imagen de arriba
+
+```python
+# blue.paste(im=red,box=(0,0),mask=red)
+blue.paste(im=red,box=(100,100),mask=red)
+blue.save('new_blue.png')
+```
+si guardamos usando el método `save()`sobreescribe el archivo
+
+## working with PDFs and Spreadsheet
+
+Python puede trabajar con pdf y csv.
+
+Los archivos csv siguen un standard que consiste en separar las variables y los datos por comas. Sería algo así:
+
+```
+id,first_name,last_name,email,gender,ip_address,city
+1,Joseph,Zaniolini,jzaniolini0@simplemachines.org,Male,163.168.68.132,Pedro Leopoldo
+```
+pero además de comas podemos usar otras cosas como tabulaciones, "|", ";"
+
+Aunq podemos exportar archivos tipo excel, google speadsheets a archivos csv solo se exportará la info, nada de imagenes, fórmulas o macros.
+
+Para trabajar con estos archivos podemos usar un módulo incluido en python o bien usar una librería llamada Pandas. 
+
+1. Pandas
+   
+Pandas realmente es una librería de análisis de datos q puede trabajar con casi cualquier tipo de datos tabulado (SQL, excel), permite visualizar y analizar esos datos.
+
+2. Openpyxl
+Otra librería interesante es Openpyxl diseñada específicamente para archivos excel incluso soporta fórmulas de excel.
+
+3. Google sheets python API
+
+Con esta api podemos acceder directamnete a archivos spreadsheets alojados online en google drive.
+
